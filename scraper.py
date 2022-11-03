@@ -13,7 +13,7 @@ MCW = []
 Subdomains = dict()
 
 def scraper(url, resp):
-    if (resp.status != 200) or (resp.raw_response_content == None):
+    if (resp.status != 200) or (resp.raw_response.content == None):
         return list()
 
     links = extract_next_links(url, resp)
