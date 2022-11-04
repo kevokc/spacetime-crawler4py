@@ -1,11 +1,10 @@
 from threading import Thread
-
+from urllib.parse import urlparse
 from inspect import getsource
 from utils.download import download
 from utils import get_logger
 import scraper
 import time
-
 
 class Worker(Thread):
     def __init__(self, worker_id, config, frontier):
@@ -17,6 +16,12 @@ class Worker(Thread):
         super().__init__(daemon=True)
         
     def run(self):
+        global Uniques
+        global LongestPage
+        global LongestWordCount
+        global MCW
+        global Subdomains
+        
         while True:
             tbd_url = self.frontier.get_tbd_url()
             if not tbd_url:
@@ -31,3 +36,19 @@ class Worker(Thread):
                 self.frontier.add_url(scraped_url)
             self.frontier.mark_url_complete(tbd_url)
             time.sleep(self.config.time_delay)
+
+        print("Number of unique pages found:", str(len(Uniques)))
+        print("Longest page:", LongestPage, "with word count of", LongestWordCount)
+        MCW.sort(key=lambda x:x[1], reverse=True)
+        print("50 most common words:", MCW[:50])
+            
+        Subdomains.clear()
+        for i in Uniques:
+            parsed = urlparse(i)
+            if "ics.uci.edu" in parsed.netloc.lower():
+                Subdomains[parsed.hostname] = Subdomains.get(parsed.hostname, 0) + 1
+        lts = list(Subdomains.items())
+        lts.sort(key=lambda x:x[0])
+        print("Subdomains:")
+        for k, v in lts:
+            print(str(k) + ", " + str(v))
