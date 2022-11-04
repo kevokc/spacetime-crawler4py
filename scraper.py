@@ -18,23 +18,6 @@ def scraper(url, resp):
 
     links = extract_next_links(url, resp)
 
-    print("Number of unique pages found:", str(len(Uniques)))
-
-    print("Longest page:", LongestPage, "with word count of", LongestWordCount)
-
-    print("50 most common words:", MCW)
-
-    Subdomains.clear()
-    for i in Uniques:
-        parsed = urlparse(i)
-        if "ics.uci.edu" in parsed.netloc.lower():
-            Subdomains[parsed.hostname] = Subdomains.get(parsed.hostname, 0) + 1
-    lts = list(Subdomains.items())
-    lts.sort(key=lambda x:x[0])
-    print("Subdomains:")
-    for k, v in lts:
-        print(str(k) + ", " + str(v))
-
     return [link for link in links if is_valid(link)]
 
 def extract_next_links(url, resp):
@@ -75,18 +58,13 @@ def extract_next_links(url, resp):
         list3.append(c.lower())
 
     unq = list(set(list3))
-
     my_dict = {}
     for d in unq:
         my_dict[d] = 0
     for e in list3:
         my_dict[e] += 1
-
     list4 = list(my_dict.items())
-    list4.sort(key=lambda x:x[1], reverse=True)
-
-    for f in range(50):
-        MCW.append(list4[f][0])
+    MCW.extend(list4)
     #tokenize
 
     if len(list2) > LongestWordCount:
@@ -147,4 +125,3 @@ def is_valid(url):
     except TypeError:
         print ("TypeError for ", parsed)
         raise
-        
