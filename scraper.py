@@ -37,7 +37,7 @@ def extract_next_links(url, resp):
     if resp.status != 200:
         return list()
         
-    soup = BeautifulSoup(resp.raw_response.content, 'html.parser')
+    soup = BeautifulSoup(resp.raw_response.content.decode('utf-8', 'ignore'), 'html.parser')
 
     #tokenize
     contents = list(soup.get_text())
@@ -56,6 +56,8 @@ def extract_next_links(url, resp):
     list3 = []
     for c in list2:
         list3.append(c.lower())
+    if len(list3) < 250:
+        return list()
 
     unq = list(set(list3))
     my_dict = {}
