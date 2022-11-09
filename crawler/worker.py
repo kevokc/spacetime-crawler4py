@@ -37,17 +37,17 @@ class Worker(Thread):
             self.frontier.mark_url_complete(tbd_url)
             time.sleep(self.config.time_delay)
 
-        print("Number of unique pages found:", str(len(Uniques)))
-        print("Longest page:", LongestPage, "with word count of", LongestWordCount)
-        MCW.sort(key=lambda x:x[1], reverse=True)
-        print("50 most common words:", MCW[:50])
+        print("Number of unique pages found:", str(len(scraper.Uniques)))
+        print("Longest page:", scraper.LongestPage, "with word count of", scraper.LongestWordCount)
+        scraper.MCW.sort(key=lambda x:x[1], reverse=True)
+        print("50 most common words:", scraper.MCW[:50])
             
-        Subdomains.clear()
-        for i in Uniques:
+        scraper.Subdomains.clear()
+        for i in scraper.Uniques:
             parsed = urlparse(i)
             if "ics.uci.edu" in parsed.netloc.lower():
-                Subdomains[parsed.hostname] = Subdomains.get(parsed.hostname, 0) + 1
-        lts = list(Subdomains.items())
+                scraper.Subdomains[parsed.hostname] = scraper.Subdomains.get(parsed.hostname, 0) + 1
+        lts = list(scraper.Subdomains.items())
         lts.sort(key=lambda x:x[0])
         print("Subdomains:")
         for k, v in lts:
