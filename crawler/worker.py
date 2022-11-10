@@ -16,12 +16,6 @@ class Worker(Thread):
         super().__init__(daemon=True)
         
     def run(self):
-        #global Uniques
-        #global LongestPage
-        #global LongestWordCount
-        #global MCW
-        #global Subdomains
-        
         while True:
             tbd_url = self.frontier.get_tbd_url()
             if not tbd_url:
