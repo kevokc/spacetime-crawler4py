@@ -116,9 +116,9 @@ def is_valid(url):
             + r"|epub|dll|cnf|tgz|sha1|z|php"
             + r"|thmx|mso|arff|rtf|jar|csv"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz|ppt|pptx|ppsx)$", parsed.path.lower()):
-                pos = my_url.find('#')
+                pos = url.find('#')
                 if pos != -1:
-                    url_in_q = my_url[:pos]
+                    url_in_q = url[:pos]
                     if url_in_q not in Uniques:
                         Uniques.add(url_in_q)
                         
