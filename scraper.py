@@ -120,7 +120,7 @@ def is_valid(url):
                 if pos != -1:
                     url_in_q = my_url[:pos]
                     if url_in_q not in Uniques:
-                        Uniques.add(url)
+                        Uniques.add(url_in_q)
                         
                 return True    
                 #if url in Uniques:
