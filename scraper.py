@@ -77,9 +77,9 @@ def extract_next_links(url, resp):
     for i in soup.find_all('a'):
         my_url = i.get('href')
         if my_url != None:
-            pos = my_url.find('#')
-            if pos != -1:
-                my_url = my_url[:pos]
+            #pos = my_url.find('#')
+            #if pos != -1:
+                #my_url = my_url[:pos]
                 
             final_list.append(my_url)
 
@@ -95,7 +95,7 @@ def is_valid(url):
         parsed = urlparse(url)
 
         valids = [".ics.uci.edu",".cs.uci.edu",".informatics.uci.edu",".stat.uci.edu","today.uci.edu/department/information_computer_sciences"]
-
+        
         if (parsed.hostname == None) or (parsed.netloc == None):
             return False
         if (parsed.scheme not in set(["http", "https"])) or (url.find("?") != -1) or (url.find("&") != -1):
@@ -116,11 +116,18 @@ def is_valid(url):
             + r"|epub|dll|cnf|tgz|sha1|z|php"
             + r"|thmx|mso|arff|rtf|jar|csv"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz|ppt|pptx|ppsx)$", parsed.path.lower()):
-                if url in Uniques:
-                    return False
-                else:
-                    Uniques.add(url)
-                    return True
+                pos = my_url.find('#')
+                if pos != -1:
+                    url_in_q = my_url[:pos]
+                    if url_in_q not in Uniques:
+                        Uniques.add(url)
+                        
+                return True    
+                #if url in Uniques:
+                    #return False
+                #else:
+                    #Uniques.add(url)
+                    #return True
         else:
             return False
 
