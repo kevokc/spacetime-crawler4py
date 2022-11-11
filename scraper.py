@@ -98,7 +98,7 @@ def is_valid(url):
         
         if (parsed.hostname == None) or (parsed.netloc == None):
             return False
-        if (parsed.scheme not in set(["http", "https"])) or (url.find("?") != -1) or (url.find("&") != -1):
+        if (parsed.scheme not in set(["http", "https"])): # or (url.find("?") != -1) or (url.find("&") != -1)
             return False
 
         hostname_check = False
