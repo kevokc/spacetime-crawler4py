@@ -41,7 +41,7 @@ def extract_next_links(url, resp):
     soup = BeautifulSoup(resp.raw_response.content.decode('utf-8', 'ignore'), 'html.parser')
 
     #tokenize
-    contents = list(soup.get_text())
+    contents = soup.get_text()
     list1 = contents.split()
     for a in list1:
         if not a.isalnum():
