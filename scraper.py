@@ -71,8 +71,9 @@ def extract_next_links(url, resp):
         if b.lower() not in stopwords.words('english'):
             list2.append(b.lower())
 
-    if (len(list2) / len(list1)) <= 0.5:
-        return list()
+    if len(list1) != 0:
+        if (len(list2) / len(list1)) <= 0.5:
+            return list()
 
     unq = list(set(list2))
     my_dict = {}
