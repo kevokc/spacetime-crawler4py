@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords
+import string
 
 Uniques = set()
 LongestPage = ""
@@ -41,13 +42,25 @@ def extract_next_links(url, resp):
 
     #tokenize
     contents = list(soup.get_text())
-    counter = 0
-    for a in contents:
-        if a.isalnum() == False:
-            contents[counter] = " "
-        counter += 1
+    list1 = contents.split()
+    for a in list1:
+        if not a.isalnum():
+            list1.remove(i)
     
-    list1 = "".join(contents).split()
+    #counter = 0
+    #DELETING = False
+    #for a in contents:
+        #if DELETING == False:
+            #if a.isalnum() == False:
+                #contents[counter] = " "
+                #DELETING = True
+        #else:
+            #if a == " ":
+                #DELETING = False
+            #contents[counter] = " "
+        #counter += 1
+    
+    #list1 = "".join(contents).split()
     
     if len(list1) > LongestWordCount:
         LongestWordCount = len(list1)
