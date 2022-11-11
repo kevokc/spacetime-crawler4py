@@ -45,7 +45,7 @@ def extract_next_links(url, resp):
     list1 = contents.split()
     for a in list1:
         if not a.isalnum():
-            list1.remove(i)
+            list1.remove(a)
     
     #counter = 0
     #DELETING = False
