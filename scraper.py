@@ -48,39 +48,33 @@ def extract_next_links(url, resp):
         counter += 1
     
     list1 = "".join(contents).split()
+    
+    if len(list1) > LongestWordCount:
+        LongestWordCount = len(list1)
+        LongestPage = url
+    
     list2 = []
     for b in list1:
-        if (b.isalnum()) and (b.lower() not in stopwords.words('english')):
+        if b.lower() not in stopwords.words('english'):
             list2.append(b.lower())
 
-    list3 = []
-    for c in list2:
-        list3.append(c.lower())
-    if len(list3) < 250:
+    if (len(list2) / len(list1)) <= 0.5:
         return list()
 
-    unq = list(set(list3))
+    unq = list(set(list2))
     my_dict = {}
     for d in unq:
         my_dict[d] = 0
-    for e in list3:
+    for e in list2:
         my_dict[e] += 1
-    list4 = list(my_dict.items())
-    MCW.extend(list4)
+    list3 = list(my_dict.items())
+    MCW.extend(list3)
     #tokenize
-
-    if len(list2) > LongestWordCount:
-        LongestWordCount = len(list2)
-        LongestPage = url
 
     final_list = []
     for i in soup.find_all('a'):
         my_url = i.get('href')
         if my_url != None:
-            #pos = my_url.find('#')
-            #if pos != -1:
-                #my_url = my_url[:pos]
-                
             final_list.append(my_url)
 
     return final_list
@@ -96,9 +90,7 @@ def is_valid(url):
 
         valids = [".ics.uci.edu",".cs.uci.edu",".informatics.uci.edu",".stat.uci.edu","today.uci.edu/department/information_computer_sciences"]
         
-        if (parsed.hostname == None) or (parsed.netloc == None):
-            return False
-        if (parsed.scheme not in set(["http", "https"])): # or (url.find("?") != -1) or (url.find("&") != -1)
+        if (parsed.hostname == None) or (parsed.netloc == None) or (parsed.scheme not in ["http", "https"]):
             return False
 
         hostname_check = False
@@ -123,11 +115,6 @@ def is_valid(url):
                         Uniques.add(url_in_q)
                         
                 return True    
-                #if url in Uniques:
-                    #return False
-                #else:
-                    #Uniques.add(url)
-                    #return True
         else:
             return False
 
