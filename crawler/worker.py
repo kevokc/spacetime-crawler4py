@@ -39,7 +39,7 @@ class Worker(Thread):
         scraper.Subdomains.clear()
         for i in scraper.Uniques:
             parsed = urlparse(i)
-            if "ics.uci.edu" in parsed.netloc.lower():
+            if ".ics.uci.edu" in parsed.netloc.lower():
                 scraper.Subdomains[parsed.hostname] = scraper.Subdomains.get(parsed.hostname, 0) + 1
         lts = list(scraper.Subdomains.items())
         lts.sort(key=lambda x:x[0])
