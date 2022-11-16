@@ -47,21 +47,6 @@ def extract_next_links(url, resp):
         if not a.isalnum():
             list1.remove(a)
     
-    #counter = 0
-    #DELETING = False
-    #for a in contents:
-        #if DELETING == False:
-            #if a.isalnum() == False:
-                #contents[counter] = " "
-                #DELETING = True
-        #else:
-            #if a == " ":
-                #DELETING = False
-            #contents[counter] = " "
-        #counter += 1
-    
-    #list1 = "".join(contents).split()
-    
     if len(list1) > LongestWordCount:
         LongestWordCount = len(list1)
         LongestPage = url
@@ -75,7 +60,7 @@ def extract_next_links(url, resp):
         if (len(list2) / len(list1)) <= 0.5:
             return list()
 
-    unq = list(set(list2))
+    unq = set(list2)
     my_dict = {}
     for d in unq:
         my_dict[d] = 0
