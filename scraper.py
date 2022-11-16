@@ -12,6 +12,7 @@ LongestPage = ""
 LongestWordCount = 0
 MCW = []
 Subdomains = dict()
+TOTAL_CRAWLED = 0
 
 def scraper(url, resp):
     if (resp.status != 200) or (resp.raw_response.content == None):
@@ -40,7 +41,7 @@ def extract_next_links(url, resp):
         
     soup = BeautifulSoup(resp.raw_response.content.decode('utf-8', 'ignore'), 'html.parser')
 
-    #tokenize
+    #report
     contents = soup.get_text()
     list1 = contents.split()
     for a in list1:
@@ -57,7 +58,7 @@ def extract_next_links(url, resp):
             list2.append(b.lower())
 
     if len(list1) != 0:
-        if (len(list2) / len(list1)) <= 0.5:
+        if (len(list2) / len(list1)) < 0.3:
             return list()
 
     unq = set(list2)
@@ -71,7 +72,7 @@ def extract_next_links(url, resp):
             my_dict[e] += 1
     list3 = list(my_dict.items())
     MCW.extend(list3)
-    #tokenize
+    #report
 
     final_list = []
     for i in soup.find_all('a'):
@@ -86,6 +87,7 @@ def is_valid(url):
     # If you decide to crawl it, return True; otherwise return False.
     # There are already some conditions that return False.
     global Uniques
+    global TOTAL_CRAWLED
 
     try:
         parsed = urlparse(url)
@@ -116,7 +118,8 @@ def is_valid(url):
                     if url_in_q not in Uniques:
                         Uniques.add(url_in_q)
                         
-                return True    
+                TOTAL_CRAWLED += 1
+                return True
         else:
             return False
 
