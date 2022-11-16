@@ -33,8 +33,12 @@ class Worker(Thread):
 
         print("Number of unique pages found:", str(len(scraper.Uniques)))
         print("Longest page:", scraper.LongestPage, "with word count of", scraper.LongestWordCount)
+        
         scraper.MCW.sort(key=lambda x:x[1], reverse=True)
-        print("50 most common words:", scraper.MCW[:50])
+        print("50 most common words:")
+        #, scraper.MCW[:50])
+        for c1, c2 in scraper.MCW[:50]:
+            print(c1, "=>", c2)
             
         scraper.Subdomains.clear()
         for i in scraper.Uniques:
@@ -46,3 +50,6 @@ class Worker(Thread):
         print("Subdomains:")
         for k, v in lts:
             print(str(k) + ", " + str(v))
+            
+        print("TOTAL CRAWLED =", scraper.TOTAL_CRAWLED)
+        
