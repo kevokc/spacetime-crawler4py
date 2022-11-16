@@ -62,10 +62,13 @@ def extract_next_links(url, resp):
 
     unq = set(list2)
     my_dict = {}
+    excps = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '\x00', '\x04']
     for d in unq:
-        my_dict[d] = 0
+        if d not in excps:
+            my_dict[d] = 0
     for e in list2:
-        my_dict[e] += 1
+        if e in my_dict.keys():
+            my_dict[e] += 1
     list3 = list(my_dict.items())
     MCW.extend(list3)
     #tokenize
