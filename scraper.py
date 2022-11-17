@@ -12,7 +12,6 @@ LongestPage = ""
 LongestWordCount = 0
 MCW = []
 Subdomains = dict()
-TOTAL_CRAWLED = 0
 
 def scraper(url, resp):
     if (resp.status != 200) or (resp.raw_response.content == None):
@@ -41,7 +40,6 @@ def extract_next_links(url, resp):
         
     soup = BeautifulSoup(resp.raw_response.content.decode('utf-8', 'ignore'), 'html.parser')
 
-    #report
     contents = soup.get_text()
     list1 = contents.split()
     for a in list1:
@@ -64,15 +62,15 @@ def extract_next_links(url, resp):
     unq = set(list2)
     my_dict = {}
     excps = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '\x00', '\x04']
+    excps.extend(list(string.ascii_lowercase))
     for d in unq:
         if (d not in excps) and (d.isalnum()):
             my_dict[d] = 0
     for e in list2:
-        if e in my_dict.keys():
+        if (e in my_dict.keys()) and (e.isalnum()):
             my_dict[e] += 1
     list3 = list(my_dict.items())
     MCW.extend(list3)
-    #report
 
     final_list = []
     for i in soup.find_all('a'):
@@ -94,7 +92,7 @@ def is_valid(url):
 
         valids = [".ics.uci.edu",".cs.uci.edu",".informatics.uci.edu",".stat.uci.edu","today.uci.edu/department/information_computer_sciences"]
         
-        if (parsed.hostname == None) or (parsed.netloc == None) or (parsed.scheme not in ["http", "https"]):
+        if (parsed.hostname == None) or (parsed.netloc == None) or (parsed.scheme not in set(["http", "https"])):
             return False
 
         hostname_check = False
@@ -111,14 +109,13 @@ def is_valid(url):
             + r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
             + r"|epub|dll|cnf|tgz|sha1|z|php"
             + r"|thmx|mso|arff|rtf|jar|csv"
-            + r"|rm|smil|wmv|swf|wma|zip|rar|gz|ppt|pptx|ppsx)$", parsed.path.lower()):
+            + r"|rm|smil|wmv|swf|wma|zip|rar|gz|ppsx)$", parsed.path.lower()):
                 pos = url.find('#')
                 if pos != -1:
                     url_in_q = url[:pos]
                     if url_in_q not in Uniques:
                         Uniques.add(url_in_q)
                         
-                TOTAL_CRAWLED += 1
                 return True
         else:
             return False
