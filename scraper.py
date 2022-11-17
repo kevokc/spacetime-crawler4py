@@ -65,7 +65,7 @@ def extract_next_links(url, resp):
     my_dict = {}
     excps = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '\x00', '\x04']
     for d in unq:
-        if d not in excps:
+        if (d not in excps) and (d.isalnum()):
             my_dict[d] = 0
     for e in list2:
         if e in my_dict.keys():
